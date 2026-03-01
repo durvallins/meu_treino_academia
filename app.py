@@ -78,10 +78,9 @@ def salvar_historico(treino_nome):
         st.error(f"Erro ao salvar histórico: {str(e)}")
         return False
 
-# CSS para Card Flutuante do Cronômetro e Melhorias Gerais de UI
+# CSS para Card Flutuante do Cronômetro
 st.markdown("""
 <style>
-    /* Cronômetro */
     .cronometro-fixo {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 12px;
@@ -101,22 +100,6 @@ st.markdown("""
         color: white;
         font-size: 0.9em;
         margin: 0;
-    }
-    
-    /* Melhorias Gerais */
-    .stCheckbox {
-        margin-top: 0px !important;
-    }
-    
-    /* Espaçamento dos elementos */
-    .element-container {
-        margin-bottom: 0.5rem;
-    }
-    
-    /* Botões */
-    .stButton button {
-        border-radius: 8px;
-        font-weight: 500;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -193,10 +176,12 @@ with card_cronometro:
             st.session_state.timer_running = False
             st.session_state.tempo_restante = 0
     
-    # Barra de progresso (só exibe quando ativo)
+    # Barra de progresso
     if st.session_state.timer_running and st.session_state.tempo_restante > 0:
         progresso = (tempo_descanso - st.session_state.tempo_restante) / tempo_descanso
         st.progress(progresso)
+    else:
+        st.progress(0)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -213,29 +198,26 @@ if st.session_state.timer_running and st.session_state.tempo_restante > 0:
 st.divider()
 
 # Listagem de Exercícios
-st.subheader(f"📋 {formatar_nome_treino(treino_selecionado)}")
+st.subheader(f"Lista de Exercícios - {formatar_nome_treino(treino_selecionado)}")
 
 for index, row in df_treino.iterrows():
-    col_check, col_nome, col_series = st.columns([0.5, 3, 1])
-    
-    with col_check:
-        st.checkbox("", key=f"check_{treino_selecionado}_{index}", label_visibility="collapsed")
-    
-    with col_nome:
-        st.markdown(f"**{row['Exercício']}**")
-    
-    with col_series:
-        st.markdown(f"<div style='text-align: right; color: #888; padding-top: 2px;'>{row['Séries']}</div>", unsafe_allow_html=True)
+    cols = st.columns([3, 1, 1])
+    with cols[0]:
+        st.write(f"**{row['Exercício']}**")
+    with cols[1]:
+        st.caption(f"{row['Séries']}")
+    with cols[2]:
+        st.checkbox("OK", key=f"check_{treino_selecionado}_{index}")
 
 st.divider()
 
-# Botão de Finalizar com estilo melhorado
-st.markdown("<br>", unsafe_allow_html=True)
-if st.button("✅ Finalizar e Salvar Treino", use_container_width=True, type="primary"):
+if st.button("✅ Finalizar e Salvar Treino", use_container_width=True):
     if salvar_historico(formatar_nome_treino(treino_selecionado)):
         st.balloons()
-        st.success("🎉 Treino registrado no histórico!")
+        st.success("Treino registrado no histórico!")
         time.sleep(1)
         st.rerun()
     else:
-        st.error("❌ Erro ao salvar o treino. Tente novamente.")
+        st.error("Erro ao salvar o treino. Tente novamente.")
+
+st.info("💡 Edite seus treinos na pasta `treinos/`.")

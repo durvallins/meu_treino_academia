@@ -64,16 +64,12 @@ APP_TREINO/
 ✅ **Feedback de salvamento**: Retorno de sucesso/erro ao salvar histórico
 ✅ **Validação de DataFrame vazio**: Tratamento quando arquivo não pode ser carregado
 ✅ **Cronômetro na área principal**: Movido da sidebar para melhor visibilidade mobile
-✅ **Barra de progresso**: Feedback visual durante contagem regressiva
-✅ **Layout otimizado**: Tudo visível na mesma tela (exercícios + cronômetro)
+✅ **Barra de progresso condicional**: Só aparece quando cronômetro está ativo
 ✅ **Card flutuante**: Cronômetro com design compacto e gradiente roxo
 ✅ **Botão Parar**: Agora é possível interromper o cronômetro
 ✅ **Design compacto**: Fonte menor (1.8em) para melhor aproveitamento de espaço
 ✅ **Session State**: Controle de estado persistente do cronômetro
-✅ **UI/UX profissional**: Layout de exercícios com checkbox ao lado do nome
-✅ **Barra de progresso condicional**: Só aparece quando cronômetro está ativo
-✅ **Alinhamento aprimorado**: Séries alinhadas à direita com cor suave
-✅ **CSS otimizado**: Espaçamentos e bordas arredondadas nos botões
+✅ **Layout de exercícios**: 3 colunas (nome | séries | checkbox)
 
 ---
 *Documento atualizado por Gemini CLI*

@@ -78,6 +78,41 @@ def salvar_historico(treino_nome):
         st.error(f"Erro ao salvar histórico: {str(e)}")
         return False
 
+# CSS para Card Fixo do Cronômetro
+st.markdown("""
+<style>
+    .cronometro-fixo {
+        position: sticky;
+        top: 60px;
+        z-index: 999;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .tempo-grande {
+        font-size: 3em;
+        font-weight: bold;
+        color: white;
+        margin: 10px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .cronometro-titulo {
+        color: white;
+        font-size: 1.2em;
+        margin: 0;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Inicializar session state
+if 'timer_running' not in st.session_state:
+    st.session_state.timer_running = False
+if 'tempo_restante' not in st.session_state:
+    st.session_state.tempo_restante = 0
+
 # --- Interface ---
 
 st.title("🏋️‍♂️ Meu Treino de Academia")
@@ -115,36 +150,53 @@ if resumo_treino:
 
 st.divider()
 
-# Cronômetro de Descanso - Área Principal
-st.markdown("### ⏱️ Cronômetro de Descanso")
-col1, col2, col3 = st.columns([2, 1, 2])
+# Card Fixo do Cronômetro
+card_cronometro = st.container()
+with card_cronometro:
+    st.markdown('<div class="cronometro-fixo">', unsafe_allow_html=True)
+    st.markdown('<p class="cronometro-titulo">⏱️ Cronômetro</p>', unsafe_allow_html=True)
+    
+    # Display do tempo
+    tempo_display = st.empty()
+    if st.session_state.timer_running and st.session_state.tempo_restante > 0:
+        tempo_display.markdown(f'<div class="tempo-grande">⏰ {st.session_state.tempo_restante}s</div>', unsafe_allow_html=True)
+    else:
+        tempo_display.markdown('<div class="tempo-grande">--</div>', unsafe_allow_html=True)
+    
+    # Controles do cronômetro
+    col1, col2, col3 = st.columns([2, 1, 1])
+    
+    with col1:
+        tempo_descanso = st.number_input("Tempo (seg):", min_value=5, max_value=300, value=60, step=5, key="tempo")
+    
+    with col2:
+        if st.button("▶️ Iniciar", use_container_width=True, type="primary"):
+            st.session_state.timer_running = True
+            st.session_state.tempo_restante = tempo_descanso
+    
+    with col3:
+        if st.button("⏹️ Parar", use_container_width=True):
+            st.session_state.timer_running = False
+            st.session_state.tempo_restante = 0
+    
+    # Barra de progresso
+    if st.session_state.timer_running and st.session_state.tempo_restante > 0:
+        progresso = (tempo_descanso - st.session_state.tempo_restante) / tempo_descanso
+        st.progress(progresso)
+    else:
+        st.progress(0)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
-with col1:
-    tempo_descanso = st.number_input("Tempo (segundos):", min_value=5, max_value=300, value=60, step=5, key="tempo")
-
-with col2:
-    st.write("")  # Espaçamento
-    st.write("")  # Espaçamento
-    iniciar = st.button("▶️ Iniciar", use_container_width=True, type="primary")
-
-# Placeholder para o cronômetro (sempre visível)
-cronometro_placeholder = st.empty()
-
-if iniciar:
-    with cronometro_placeholder.container():
-        progress_bar = st.progress(0)
-        timer_display = st.empty()
-        
-        for i in range(tempo_descanso, 0, -1):
-            timer_display.markdown(f"# ⏰ {i}s")
-            progress_bar.progress((tempo_descanso - i) / tempo_descanso)
-            time.sleep(1)
-        
-        timer_display.markdown("# 🔥 Próxima Série!")
-        progress_bar.progress(1.0)
+# Lógica do cronômetro
+if st.session_state.timer_running and st.session_state.tempo_restante > 0:
+    time.sleep(1)
+    st.session_state.tempo_restante -= 1
+    if st.session_state.tempo_restante == 0:
+        st.session_state.timer_running = False
         st.balloons()
-        time.sleep(2)
-        cronometro_placeholder.empty()
+        st.success("🔥 Próxima Série!")
+    st.rerun()
 
 st.divider()
 

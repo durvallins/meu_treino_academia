@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Ambientes virtuais  
+venv/
+env/
+ENV/
+.venv
+
+# Streamlit
+.streamlit/
+
+# Dados sensíveis e histórico (não versionar)
+data/*.csv
+!data/workouts_template.csv
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

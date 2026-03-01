@@ -70,6 +70,10 @@ APP_TREINO/
 ✅ **Botão Parar**: Agora é possível interromper o cronômetro
 ✅ **Design compacto**: Fonte menor (1.8em) para melhor aproveitamento de espaço
 ✅ **Session State**: Controle de estado persistente do cronômetro
+✅ **UI/UX profissional**: Layout de exercícios com checkbox ao lado do nome
+✅ **Barra de progresso condicional**: Só aparece quando cronômetro está ativo
+✅ **Alinhamento aprimorado**: Séries alinhadas à direita com cor suave
+✅ **CSS otimizado**: Espaçamentos e bordas arredondadas nos botões
 
 ---
 *Documento atualizado por Gemini CLI*

@@ -82,30 +82,14 @@ def salvar_historico(treino_nome):
 
 st.title("🏋️‍♂️ Meu Treino de Academia")
 
-# Sidebar para Histórico e Cronômetro
+# Sidebar para Histórico
 with st.sidebar:
-    st.header("⏱️ Ferramentas")
-    
-    # Cronômetro de Descanso
-    st.subheader("Descanso")
-    tempo_descanso = st.number_input("Segundos:", value=60, step=5)
-    if st.button("Iniciar Cronômetro"):
-        placeholder = st.empty()
-        for i in range(tempo_descanso, 0, -1):
-            placeholder.metric("Tempo Restante", f"{i}s")
-            time.sleep(1)
-        placeholder.success("🔥 Próxima Série!")
-        st.balloons()
-
-    st.divider()
-    
-    # Exibir Histórico
-    st.subheader("📅 Últimos Treinos")
+    st.header("📅 Histórico")
     if os.path.exists(HISTORICO_FILE):
         df_hist = pd.read_csv(HISTORICO_FILE)
-        st.dataframe(df_hist.tail(5).iloc[::-1], hide_index=True)
+        st.dataframe(df_hist.tail(10).iloc[::-1], hide_index=True)
     else:
-        st.write("Nenhum histórico ainda.")
+        st.write("Nenhum treino registrado ainda.")
 
 # Seleção de Treino
 arquivos_treino = sorted([f for f in os.listdir(TREINOS_DIR) if f.endswith('.txt')])
@@ -128,6 +112,39 @@ if df_treino.empty:
 
 if resumo_treino:
     st.markdown(f"**🎯 Objetivo:** *{resumo_treino}*")
+
+st.divider()
+
+# Cronômetro de Descanso - Área Principal
+st.markdown("### ⏱️ Cronômetro de Descanso")
+col1, col2, col3 = st.columns([2, 1, 2])
+
+with col1:
+    tempo_descanso = st.number_input("Tempo (segundos):", min_value=5, max_value=300, value=60, step=5, key="tempo")
+
+with col2:
+    st.write("")  # Espaçamento
+    st.write("")  # Espaçamento
+    iniciar = st.button("▶️ Iniciar", use_container_width=True, type="primary")
+
+# Placeholder para o cronômetro (sempre visível)
+cronometro_placeholder = st.empty()
+
+if iniciar:
+    with cronometro_placeholder.container():
+        progress_bar = st.progress(0)
+        timer_display = st.empty()
+        
+        for i in range(tempo_descanso, 0, -1):
+            timer_display.markdown(f"# ⏰ {i}s")
+            progress_bar.progress((tempo_descanso - i) / tempo_descanso)
+            time.sleep(1)
+        
+        timer_display.markdown("# 🔥 Próxima Série!")
+        progress_bar.progress(1.0)
+        st.balloons()
+        time.sleep(2)
+        cronometro_placeholder.empty()
 
 st.divider()
 

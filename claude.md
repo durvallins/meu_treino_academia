@@ -66,6 +66,10 @@ APP_TREINO/
 ✅ **Cronômetro na área principal**: Movido da sidebar para melhor visibilidade mobile
 ✅ **Barra de progresso**: Feedback visual durante contagem regressiva
 ✅ **Layout otimizado**: Tudo visível na mesma tela (exercícios + cronômetro)
+✅ **Card fixo (sticky)**: Cronômetro permanece visível ao rolar a página
+✅ **Botão Parar**: Agora é possível interromper o cronômetro
+✅ **Design aprimorado**: Gradiente roxo e visual moderno no cronômetro
+✅ **Session State**: Controle de estado persistente do cronômetro
 
 ---
 *Documento atualizado por Gemini CLI*

@@ -63,6 +63,9 @@ APP_TREINO/
 ✅ **Correção .gitignore**: Agora os arquivos `.txt` de treino são versionados corretamente
 ✅ **Feedback de salvamento**: Retorno de sucesso/erro ao salvar histórico
 ✅ **Validação de DataFrame vazio**: Tratamento quando arquivo não pode ser carregado
+✅ **Cronômetro na área principal**: Movido da sidebar para melhor visibilidade mobile
+✅ **Barra de progresso**: Feedback visual durante contagem regressiva
+✅ **Layout otimizado**: Tudo visível na mesma tela (exercícios + cronômetro)
 
 ---
 *Documento atualizado por Gemini CLI*

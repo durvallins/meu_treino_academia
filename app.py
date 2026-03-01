@@ -81,25 +81,10 @@ def salvar_historico(treino_nome):
 # CSS para Card Flutuante do Cronômetro
 st.markdown("""
 <style>
-    .cronometro-fixo {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 12px;
-        border-radius: 12px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        margin-bottom: 20px;
-        text-align: center;
-    }
     .tempo-grande {
         font-size: 1.8em;
         font-weight: bold;
-        color: white;
         margin: 5px 0;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-    }
-    .cronometro-titulo {
-        color: white;
-        font-size: 0.9em;
-        margin: 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -145,45 +130,37 @@ if df_treino.empty:
 if resumo_treino:
     st.markdown(f"**🎯 Objetivo:** *{resumo_treino}*")
 
-st.divider()
+st.markdown("---")
 
-# Card Flutuante do Cronômetro
-card_cronometro = st.container()
-with card_cronometro:
-    st.markdown('<div class="cronometro-fixo">', unsafe_allow_html=True)
-    st.markdown('<p class="cronometro-titulo">⏱ Cronômetro</p>', unsafe_allow_html=True)
-    
-    # Display do tempo
-    tempo_display = st.empty()
-    if st.session_state.timer_running and st.session_state.tempo_restante > 0:
-        tempo_display.markdown(f'<div class="tempo-grande">{st.session_state.tempo_restante}s</div>', unsafe_allow_html=True)
-    else:
-        tempo_display.markdown('<div class="tempo-grande">--</div>', unsafe_allow_html=True)
-    
-    # Controles do cronômetro
-    col1, col2, col3 = st.columns([2, 1, 1])
-    
-    with col1:
-        tempo_descanso = st.number_input("Tempo (seg):", min_value=5, max_value=300, value=60, step=5, key="tempo")
-    
-    with col2:
-        if st.button("▶️ Iniciar", use_container_width=True, type="primary"):
-            st.session_state.timer_running = True
-            st.session_state.tempo_restante = tempo_descanso
-    
-    with col3:
-        if st.button("⏹️ Parar", use_container_width=True):
-            st.session_state.timer_running = False
-            st.session_state.tempo_restante = 0
-    
-    # Barra de progresso
-    if st.session_state.timer_running and st.session_state.tempo_restante > 0:
-        progresso = (tempo_descanso - st.session_state.tempo_restante) / tempo_descanso
-        st.progress(progresso)
-    else:
-        st.progress(0)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+# Cronômetro
+st.markdown("### ⏱ Cronômetro")
+
+# Display do tempo
+if st.session_state.timer_running and st.session_state.tempo_restante > 0:
+    st.markdown(f'<div class="tempo-grande" style="text-align: center;">⏰ {st.session_state.tempo_restante}s</div>', unsafe_allow_html=True)
+else:
+    st.markdown('<div class="tempo-grande" style="text-align: center; color: #888;">--</div>', unsafe_allow_html=True)
+
+# Controles do cronômetro
+col1, col2, col3 = st.columns([2, 1, 1])
+
+with col1:
+    tempo_descanso = st.number_input("Tempo (seg):", min_value=5, max_value=300, value=60, step=5, key="tempo")
+
+with col2:
+    if st.button("▶️ Iniciar", use_container_width=True, type="primary"):
+        st.session_state.timer_running = True
+        st.session_state.tempo_restante = tempo_descanso
+
+with col3:
+    if st.button("⏹️ Parar", use_container_width=True):
+        st.session_state.timer_running = False
+        st.session_state.tempo_restante = 0
+
+# Barra de progresso (só exibe quando ativo)
+if st.session_state.timer_running and st.session_state.tempo_restante > 0:
+    progresso = (tempo_descanso - st.session_state.tempo_restante) / tempo_descanso
+    st.progress(progresso)
 
 # Lógica do cronômetro
 if st.session_state.timer_running and st.session_state.tempo_restante > 0:

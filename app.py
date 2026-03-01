@@ -78,30 +78,27 @@ def salvar_historico(treino_nome):
         st.error(f"Erro ao salvar histórico: {str(e)}")
         return False
 
-# CSS para Card Fixo do Cronômetro
+# CSS para Card Flutuante do Cronômetro
 st.markdown("""
 <style>
     .cronometro-fixo {
-        position: sticky;
-        top: 60px;
-        z-index: 999;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 15px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        padding: 12px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         margin-bottom: 20px;
         text-align: center;
     }
     .tempo-grande {
-        font-size: 3em;
+        font-size: 1.8em;
         font-weight: bold;
         color: white;
-        margin: 10px 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        margin: 5px 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
     .cronometro-titulo {
         color: white;
-        font-size: 1.2em;
+        font-size: 0.9em;
         margin: 0;
     }
 </style>
@@ -150,16 +147,16 @@ if resumo_treino:
 
 st.divider()
 
-# Card Fixo do Cronômetro
+# Card Flutuante do Cronômetro
 card_cronometro = st.container()
 with card_cronometro:
     st.markdown('<div class="cronometro-fixo">', unsafe_allow_html=True)
-    st.markdown('<p class="cronometro-titulo">⏱️ Cronômetro</p>', unsafe_allow_html=True)
+    st.markdown('<p class="cronometro-titulo">⏱ Cronômetro</p>', unsafe_allow_html=True)
     
     # Display do tempo
     tempo_display = st.empty()
     if st.session_state.timer_running and st.session_state.tempo_restante > 0:
-        tempo_display.markdown(f'<div class="tempo-grande">⏰ {st.session_state.tempo_restante}s</div>', unsafe_allow_html=True)
+        tempo_display.markdown(f'<div class="tempo-grande">{st.session_state.tempo_restante}s</div>', unsafe_allow_html=True)
     else:
         tempo_display.markdown('<div class="tempo-grande">--</div>', unsafe_allow_html=True)
     
